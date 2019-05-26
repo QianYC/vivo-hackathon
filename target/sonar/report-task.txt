@@ -1,0 +1,6 @@
+projectKey=aipk
+serverUrl=http://47.102.115.207:9000
+serverVersion=7.7.0.23042
+dashboardUrl=http://47.102.115.207:9000/dashboard?id=aipk
+ceTaskId=AWrz7r1QY5GWoiQpq88o
+ceTaskUrl=http://47.102.115.207:9000/api/ce/task?id=AWrz7r1QY5GWoiQpq88o

@@ -7,8 +7,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 import vivo.hackathon.server.service.UserService;
 
+@Component
 public class UserAuthProvider implements AuthenticationProvider {
     @Autowired
     UserService service;

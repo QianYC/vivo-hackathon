@@ -21,10 +21,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll();
     }
 
-    @Bean
-    AuthenticationProvider authenticationProvider() {
-        return new UserAuthProvider();
-    }
+    @Autowired
+    LoginSuccessHandler handler;
+
+    @Autowired
+    UserAuthProvider provider;
+
 
     @Configuration
     @Order(1)
@@ -37,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .anyRequest().hasRole("USER")
                     .anyRequest().authenticated()
                     .and()
-                    .formLogin().loginPage("/user/login")/*.successHandler(null)*/.permitAll();
+                    .formLogin().loginPage("/user/login").successHandler(handler).permitAll();
         }
 
         @Autowired
@@ -45,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             /**
              * 验证方式为根据数据库内容验证
              */
-            builder.authenticationProvider(authenticationProvider());
+            builder.authenticationProvider(provider);
         }
     }
 
@@ -60,13 +62,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .anyRequest().hasRole("ADMIN")
                     .anyRequest().authenticated()
                     .and()
-                    .formLogin().loginPage("/admin/login")/*.successHandler(null)*/.permitAll();
+                    .formLogin().loginPage("/admin/login").successHandler(handler).permitAll();
 
         }
 
         @Autowired
         public void configureGlobal(AuthenticationManagerBuilder builder) throws Exception {
-            builder.authenticationProvider(authenticationProvider());
+            builder.authenticationProvider(provider);
         }
     }
 }
