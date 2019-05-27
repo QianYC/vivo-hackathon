@@ -1,5 +1,6 @@
 package vivo.hackathon.server.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -7,9 +8,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import vivo.hackathon.server.entity.Payload;
 import vivo.hackathon.server.service.GeneralService;
 
-import java.util.HashMap;
+import javax.websocket.EncodeException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,6 +25,8 @@ public class GeneralController {
     RestTemplate template;
     @Autowired
     GeneralService generalService;
+    @Autowired
+    BrowserWebSocket browserWebSocket;
 
     /**
      * 查看所有游戏
@@ -111,7 +116,7 @@ public class GeneralController {
      * @param data
      */
     public void prepare(String token, JSONObject data) {
-        Map<String, String> map = generalService.deTokenize(token);
+        Map<String, String> map = GeneralService.deTokenize(token);
         String userName = map.get("userName");
         String gid = map.get("gid");
         String rid = map.get("rid");
@@ -126,7 +131,7 @@ public class GeneralController {
      * @param data
      */
     public void operate(String token, JSONObject data) {
-        Map<String, String> map = generalService.deTokenize(token);
+        Map<String, String> map = GeneralService.deTokenize(token);
         String userName = map.get("userName");
         String gid = map.get("gid");
         String rid = map.get("rid");
@@ -139,14 +144,14 @@ public class GeneralController {
         template.postForObject(url, params, Void.class);
     }
 
-    /**
-     * 通知前端比赛开始
-     * @param gid
-     * @param rid
-     */
-    @GetMapping("/start/{gid}/{rid}")
-    public void startMatch(@PathVariable("gid") String gid,
-                           @PathVariable("rid") String rid) {
-
+    @PostMapping("/operate")
+    public void operate(@RequestBody Payload payload) throws IOException, EncodeException {
+        browserWebSocket.sendMessage(payload.getGid(), payload.getRid(), payload.getArray());
     }
+
+//    @PostMapping("/operate")
+//    public void sendSteps(String gid, String rid, JSONArray array) throws IOException, EncodeException {
+//        browserWebSocket.sendMessage(gid, rid, array);
+//    }
+
 }

@@ -23,5 +23,5 @@ public interface GameService {
 
     String getIntro();
 
-
+    Room getRoom(String rid);
 }

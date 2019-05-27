@@ -1,6 +1,7 @@
 server:
   port: 9002
   service-url: server
+  max-http-header-size: 204800
 
 eureka:
   client:

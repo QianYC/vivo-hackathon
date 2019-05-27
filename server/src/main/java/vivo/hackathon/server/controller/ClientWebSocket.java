@@ -4,6 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.ContextLoader;
+import vivo.hackathon.server.service.GeneralService;
 import vivo.hackathon.server.util.DataFormat;
 import vivo.hackathon.server.util.JsonDecoder;
 import vivo.hackathon.server.util.JsonEncoder;
@@ -13,11 +16,8 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.security.cert.X509Certificate;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 @ServerEndpoint(value = "/client/{token}",
         encoders = {JsonEncoder.class},
@@ -26,8 +26,16 @@ import java.util.Set;
 @Slf4j
 public class ClientWebSocket {
     static Map<String, Session> tokenSessions = new HashMap<>();
+
     @Autowired
-    GeneralController generalController;
+    GeneralController controller;
+
+    private static GeneralController generalController;
+
+    @PostConstruct
+    public void post() {
+        generalController = controller;
+    }
 
     @OnOpen
     public void onOpen(Session session, @PathParam("token") String token) {
@@ -43,7 +51,6 @@ public class ClientWebSocket {
                 tokenSessions.remove(entry);
             }
         }
-        session.close();
     }
 
     @OnMessage
@@ -54,7 +61,7 @@ public class ClientWebSocket {
         JSONObject data = JSONObject.parseObject(object.getString(DataFormat.DATA));
         switch (object.getString(DataFormat.OP)) {
             case DataFormat.OP_OPERATION:
-                generalController.operate(token, data);
+//                generalController.operate(token, data);
                 break;
             case DataFormat.OP_PREPARE:
                 generalController.prepare(token, data);

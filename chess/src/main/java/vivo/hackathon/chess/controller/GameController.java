@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import vivo.hackathon.chess.service.GameService;
+import vivo.hackathon.chess.service.ServerClient;
+import vivo.hackathon.chess.service.impl.RunnerServiceImpl;
 
 @RestController
+@Slf4j
 public class GameController {
 
     @Autowired
@@ -25,6 +28,9 @@ public class GameController {
 
     @Value("${game-pic-url}")
     String gamePicUrl;
+
+    @Autowired
+    ServerClient client;
 
     @GetMapping("/joinGame")
     public JSONObject  joinGame() {
@@ -57,9 +63,9 @@ public class GameController {
 
     @GetMapping("/room/{rid}/prepare/{userName}")
     public void prepare(@PathVariable("rid") String rid, @PathVariable("userName") String userName) {
+        log.info("prepare");
         if (gameService.prepare(rid, userName)) {
-            String url = String.format("http://%s/start/%s/%s", server, gid, rid);
-            template.getForObject(url, Void.class);
+            new Thread(new RunnerServiceImpl(gameService.getRoom(rid), client, server, gid)).start();
         }
     }
 

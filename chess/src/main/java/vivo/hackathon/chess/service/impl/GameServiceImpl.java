@@ -87,4 +87,9 @@ public class GameServiceImpl implements GameService {
     public String getIntro() {
         return intro;
     }
+
+    @Override
+    public Room getRoom(String rid) {
+        return rooms.get(rid);
+    }
 }
