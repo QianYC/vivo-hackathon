@@ -37,18 +37,18 @@ public class RunnerServiceImpl implements RunnerService {
         JSONArray positions0 = new JSONArray();
         JSONArray positions1 = new JSONArray();
         try {
-            for(int i=0;i<20;i++){
+            for(int i=0;i<9;i++){
                 JSONArray steps = new JSONArray();
                 JSONObject step = new JSONObject();
                 JSONObject position = new JSONObject();
                 if(i%2==0) {
-                    position.put("x", 1);
-                    position.put("y", i / 2);
+                    position.put("x", 6);
+                    position.put("y", i / 2 + 5);
                     positions0.add(position);
                 } else {
                     position = new JSONObject();
-                    position.put("x", 2);
-                    position.put("y", i / 2);
+                    position.put("x", 7);
+                    position.put("y", i / 2 + 5);
                     positions1.add(position);
                 }
                 step.put("username", players.get(0).getUserName());

@@ -65,7 +65,7 @@ public class ServerApplicationTests {
         controller.leaveRoom("0", "0", "test");
         controller.prepare("test", jsonObject);
         controller.operate("test", jsonObject);
-        controller.startMatch("0", " ");
+//        controller.startMatch("0", " ");
     }
 
     @Test
@@ -81,7 +81,7 @@ public class ServerApplicationTests {
 
     @Test
     public void test8() {
-        Assert.assertSame("deTokenize不为100", 100, generalService.deTokenize("test#1#2"));
+        Assert.assertSame("deTokenize不为100", 100, GeneralService.deTokenize("test#1#2"));
     }
 
     @Test
