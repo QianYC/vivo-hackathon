@@ -1,5 +1,6 @@
 server:
   port: 9002
+  service-url: server
 
 eureka:
   client:
@@ -9,3 +10,6 @@ eureka:
 spring:
   application:
     name: game-chess
+
+game-pic-url: https://cdn.nlark.com/yuque/0/2019/png/248245/1558873338221-f29b560c-b606-4fd9-9476-3b173c0c4430.png
+api-introduction: "1、完成你的AI程序。每次轮到你落子时，我们会调用你的程序，并传入一个JSON字符串，形如{\"user\": 1/2, \"maps\": []}，其中maps为一个15×15的矩阵，矩阵的可能值为0/1/2，其中与user相同的为你之前的落子，为0则未落子，否则为对手的落子。你的AI程序需要据此计算出你下一步的落子位置，在标准输出中输出一个JSON字符串，形如{\"x\": x, \"y\": y}，其中x和y代表你的落子位置(x, y)。\n2、进入游戏，选择一个游戏房间，得到你的URL和Token。\n3、启动client.py，此时会弹出一个浏览器页面，在其上输入你的URL+Token以及你的AI程序的完整路径。请确保路径正确，且AI程序有执行权限。\n4、点击Submit按钮，如果一切正常，你的AI程序即可与对手对战。\n5、你可以在client.py的运行窗口、浏览器中看到游戏的进展。"

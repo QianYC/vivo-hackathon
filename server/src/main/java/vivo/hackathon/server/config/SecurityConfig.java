@@ -18,7 +18,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-                .anyRequest().permitAll();
+                .anyRequest().permitAll()
+                .and()
+                .csrf().disable()
+                .cors();
     }
 
     @Autowired
@@ -35,11 +38,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             httpSecurity
                     .antMatcher("/user/**")
                     .authorizeRequests()
-                    .antMatchers("/register").permitAll()
+                    .antMatchers("/user/register").permitAll()
                     .anyRequest().hasRole("USER")
                     .anyRequest().authenticated()
                     .and()
-                    .formLogin().loginPage("/user/login").successHandler(handler).permitAll();
+                    .formLogin().loginPage("/user/login")
+                    .usernameParameter("username")
+                    .passwordParameter("password")
+                    .successHandler(handler).permitAll()
+                    .and()
+                    .csrf().disable()
+                    .cors();
         }
 
         @Autowired
@@ -58,11 +67,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             httpSecurity
                     .antMatcher("/admin/**")
                     .authorizeRequests()
-                    .antMatchers("/register").permitAll()
+                    .antMatchers("/admin/register").permitAll()
                     .anyRequest().hasRole("ADMIN")
                     .anyRequest().authenticated()
                     .and()
-                    .formLogin().loginPage("/admin/login").successHandler(handler).permitAll();
+                    .formLogin().loginPage("/admin/login")
+                    .successHandler(handler).permitAll()
+                    .and()
+                    .csrf().disable()
+                    .cors();
 
         }
 

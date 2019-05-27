@@ -17,11 +17,11 @@ public class User {
     @GeneratedValue
     private long id;
 
-    private String role, userName, password;
+    private String role, username, password;
 
-    public User(String role, String userName, String password) {
+    public User(String role, String username, String password) {
         this.role = role;
-        this.userName = userName;
+        this.username = username;
         this.password = password;
     }
 }

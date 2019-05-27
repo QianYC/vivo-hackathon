@@ -7,5 +7,5 @@ import vivo.hackathon.server.entity.User;
 @Repository
 public interface UserDao extends JpaRepository<User, Long> {
 
-    User findByUserName(String userName);
+    User findByUsername(String username);
 }
